@@ -26,10 +26,11 @@ namespace PontoEletronicoApi
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -72,7 +73,7 @@ namespace PontoEletronicoApi
                 paramsValidation.ClockSkew = TimeSpan.Zero;
             });
 
-            services.AddSingleton<ITokenJwtServico, TokenJwtServico>();
+            services.AddTransient<ITokenJwtServico, TokenJwtServico>();
 
             // Ativa o uso do token como forma de autorizar o acesso
             // a recursos deste projeto
@@ -81,6 +82,15 @@ namespace PontoEletronicoApi
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build());
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+                });
             });
 
             services.AddControllers();
@@ -97,6 +107,8 @@ namespace PontoEletronicoApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 

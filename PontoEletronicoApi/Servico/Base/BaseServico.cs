@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PontoEletronico.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PontoEletronico.Servico.Base
 {

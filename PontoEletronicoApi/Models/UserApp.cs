@@ -7,8 +7,8 @@ namespace PontoEletronico.Models
 {
     public class UserApp
     {
-        public string email { get; set; }
-        public string password { get; set; }
+        public string cpf { get; set; }
+        public string senha { get; set; }
 
     }
 }

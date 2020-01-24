@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using PontoEletronico.Data;
 using PontoEletronico.JwtConfigurations;
+using PontoEletronico.Models.Mapper;
 using PontoEletronico.Models.TokenConfiguration;
 using PontoEletronico.Servico;
 using PontoEletronico.Servico.Interface;
@@ -72,6 +74,14 @@ namespace PontoEletronicoApi
                 // computadores envolvidos no processo de comunicação)
                 paramsValidation.ClockSkew = TimeSpan.Zero;
             });
+
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+            });
+            IMapper mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddTransient<ITokenJwtServico, TokenJwtServico>();
 

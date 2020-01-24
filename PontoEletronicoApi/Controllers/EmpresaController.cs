@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using CFC_Negocio.DTO.Ext;
 using Microsoft.AspNetCore.Mvc;
 using PontoEletronico.Data;
+using PontoEletronico.Models;
 using PontoEletronico.Servico.Base;
 
 namespace PontoEletronicoApi.Controllers
@@ -22,6 +19,10 @@ namespace PontoEletronicoApi.Controllers
             _mapper = mapper;
         }
 
-
+        [Route("ObterTodosPaginado")]
+        public PaginacaoDTO ObterTodosPaginado(PaginacaoConfigDTO config)
+        {
+            return servico.ObterTodos<Empresa>().AsPaginado(config);
+        }
     }
 }

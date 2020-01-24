@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CFC_Negocio.DTO.Ext;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace PontoEletronico.Servico.Base
 {
@@ -22,6 +21,11 @@ namespace PontoEletronico.Servico.Base
             {
                 return query;
             }
+        }
+
+        public static PaginacaoDTO AsPaginado(this IQueryable<dynamic> lista, PaginacaoConfigDTO config)
+        {
+            return new PaginacaoDTO(lista, config);
         }
     }
 }

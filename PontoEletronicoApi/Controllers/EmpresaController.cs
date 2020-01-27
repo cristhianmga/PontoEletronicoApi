@@ -3,6 +3,7 @@ using CFC_Negocio.DTO.Ext;
 using Microsoft.AspNetCore.Mvc;
 using PontoEletronico.Data;
 using PontoEletronico.Models;
+using PontoEletronico.Models.DTO;
 using PontoEletronico.Servico.Base;
 
 namespace PontoEletronicoApi.Controllers
@@ -20,9 +21,9 @@ namespace PontoEletronicoApi.Controllers
         }
 
         [Route("ObterTodosPaginado")]
-        public PaginacaoDTO ObterTodosPaginado(PaginacaoConfigDTO config)
+        public PaginacaoDTO<EmpresaDto> ObterTodosPaginado([FromQuery]PaginacaoConfigDTO config)
         {
-            return servico.ObterTodos<Empresa>().AsPaginado(config);
+            return servico.ObterTodos<Empresa>().AsPaginado<EmpresaDto>(config,_mapper);
         }
     }
 }

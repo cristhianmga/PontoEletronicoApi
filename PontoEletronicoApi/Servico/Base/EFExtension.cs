@@ -1,4 +1,5 @@
-﻿using CFC_Negocio.DTO.Ext;
+﻿using AutoMapper;
+using CFC_Negocio.DTO.Ext;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -23,9 +24,9 @@ namespace PontoEletronico.Servico.Base
             }
         }
 
-        public static PaginacaoDTO AsPaginado(this IQueryable<dynamic> lista, PaginacaoConfigDTO config)
+        public static PaginacaoDTO<R> AsPaginado<R>(this IQueryable<dynamic> lista, PaginacaoConfigDTO config,IMapper mapper)
         {
-            return new PaginacaoDTO(lista, config);
+            return new PaginacaoDTO<R>(lista, config,mapper);
         }
     }
 }

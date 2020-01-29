@@ -5,6 +5,7 @@ using PontoEletronico.Data;
 using PontoEletronico.Models;
 using PontoEletronico.Models.DTO;
 using PontoEletronico.Servico.Base;
+using System.Linq;
 
 namespace PontoEletronicoApi.Controllers
 {
@@ -20,10 +21,23 @@ namespace PontoEletronicoApi.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         [Route("ObterTodosPaginado")]
         public PaginacaoDTO<EmpresaDto> ObterTodosPaginado([FromQuery]PaginacaoConfigDTO config)
         {
             return servico.ObterTodos<Empresa>().AsPaginado<EmpresaDto>(config,_mapper);
+        }
+
+        [HttpPost]
+        public Empresa Salvar(Empresa dto)
+        {
+            return servico.Salvar<Empresa>(dto);
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public EmpresaDto Obter(int id)
+        {
+            return _mapper.Map<EmpresaDto>(servico.ObterTodos<Empresa>().Where(x => x.Id == id).FirstOrDefault());
         }
     }
 }

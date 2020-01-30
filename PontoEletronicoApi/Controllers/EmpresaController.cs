@@ -5,6 +5,7 @@ using PontoEletronico.Data;
 using PontoEletronico.Models;
 using PontoEletronico.Models.DTO;
 using PontoEletronico.Servico.Base;
+using System;
 using System.Linq;
 
 namespace PontoEletronicoApi.Controllers
@@ -15,7 +16,7 @@ namespace PontoEletronicoApi.Controllers
     {
         private readonly BaseServico servico;
         private readonly IMapper _mapper;
-        public EmpresaController(ApplicationDbContext ctx,IMapper mapper)
+        public EmpresaController(ApplicationDbContext ctx, IMapper mapper)
         {
             servico = new BaseServico(ctx);
             _mapper = mapper;
@@ -25,7 +26,7 @@ namespace PontoEletronicoApi.Controllers
         [Route("ObterTodosPaginado")]
         public PaginacaoDTO<EmpresaDto> ObterTodosPaginado([FromQuery]PaginacaoConfigDTO config)
         {
-            return servico.ObterTodos<Empresa>().AsPaginado<EmpresaDto>(config,_mapper);
+            return servico.ObterTodos<Empresa>().AsPaginado<EmpresaDto>(config, _mapper);
         }
 
         [HttpPost]
@@ -33,11 +34,34 @@ namespace PontoEletronicoApi.Controllers
         {
             return servico.Salvar<Empresa>(dto);
         }
+
+        [HttpPut]
+        public StatusCodeResult Atualizar(Empresa dto)
+        {
+            try
+            {
+                servico.Atualizar<Empresa>(dto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+            }
+        }
+
         [HttpGet]
         [Route("{id}")]
         public EmpresaDto Obter(int id)
         {
             return _mapper.Map<EmpresaDto>(servico.ObterTodos<Empresa>().Where(x => x.Id == id).FirstOrDefault());
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public StatusCodeResult Deletar(int id)
+        {
+            servico.ExcluirAsync<Empresa>(id);
+            return Ok();
         }
     }
 }

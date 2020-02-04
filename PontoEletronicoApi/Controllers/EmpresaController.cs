@@ -7,6 +7,7 @@ using PontoEletronico.Models.DTO;
 using PontoEletronico.Servico.Base;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace PontoEletronicoApi.Controllers
 {
@@ -30,9 +31,11 @@ namespace PontoEletronicoApi.Controllers
         }
 
         [HttpPost]
-        public Empresa Salvar(Empresa dto)
+        public DadosContratacaoFuncionario Salvar(DadosContratacaoFuncionarioDto dto)
         {
-            return servico.Salvar<Empresa>(dto);
+            var entity = _mapper.Map<DadosContratacaoFuncionario>(dto);
+            entity.Ceo = true;
+            return servico.Salvar<DadosContratacaoFuncionario>(entity);
         }
 
         [HttpPut]

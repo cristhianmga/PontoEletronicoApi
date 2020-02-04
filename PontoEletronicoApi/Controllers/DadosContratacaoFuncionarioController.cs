@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -11,6 +12,7 @@ using PontoEletronico.Data;
 using PontoEletronico.Models;
 using PontoEletronico.Models.DTO;
 using PontoEletronico.Servico.Base;
+using PontoEletronico.Servico.Interface;
 
 namespace PontoEletronicoApi.Controllers
 {
@@ -20,10 +22,12 @@ namespace PontoEletronicoApi.Controllers
     {
         private readonly BaseServico servico;
         private readonly IMapper _mapper;
-        public DadosContratacaoFuncionarioController(ApplicationDbContext ctx, IMapper mapper)
+        private readonly ITokenJwtServico _tokenJwtServico;
+        public DadosContratacaoFuncionarioController(ApplicationDbContext ctx, IMapper mapper,ITokenJwtServico tokenJwtServico)
         {
             servico = new BaseServico(ctx);
             _mapper = mapper;
+            _tokenJwtServico = tokenJwtServico;
         }
 
         [HttpGet]
@@ -32,7 +36,10 @@ namespace PontoEletronicoApi.Controllers
         {
             StringValues token;
             Request.Headers.TryGetValue("Authorization", out token);
-            return servico.ObterTodos<DadosContratacaoFuncionario>().AsPaginado<DadosContratacaoFuncionarioDto>(config, _mapper);
+            var cpf = _tokenJwtServico.ReadToken(token).Claims.ToList()[0].Value;
+            var dados = servico.ObterTodos<DadosContratacaoFuncionario>(new string[] { "Funcionario","Empresa" }).Where(x => x.Funcionario.Cpf == cpf).FirstOrDefault();
+            var empresaId = dados.Empresa.Id;
+            return servico.ObterTodos<DadosContratacaoFuncionario>(new string[] { "Funcionario", "Empresa" }).Where(x => x.Empresa.Id == empresaId).AsPaginado<DadosContratacaoFuncionarioDto>(config, _mapper);
         }
 
         [HttpPost]

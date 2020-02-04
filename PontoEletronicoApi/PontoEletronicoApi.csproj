@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20200203185939_AddColunaCeoAndRequiredRetiradosDadosContratacaoFuncionario.cs" />
+    <Compile Remove="Data\Migrations\20200203185939_AddColunaCeoAndRequiredRetiradosDadosContratacaoFuncionario.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Servico\" />
   </ItemGroup>
 

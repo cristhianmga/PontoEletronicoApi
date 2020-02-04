@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
 using PontoEletronico.Data;
 using PontoEletronico.JwtConfigurations;
 using PontoEletronico.Models;
@@ -23,6 +24,13 @@ namespace PontoEletronico.Servico
             _signingConfigurations = signingConfigurations;
             _tokenConfigurations = tokenConfiguration;
             servico = new BaseServico(context);
+        }
+
+        public JwtSecurityToken ReadToken(StringValues token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            return handler.ReadJwtToken(token.ToString().Split(new char[0])[1]);
+
         }
 
         public object CriarTokenJwt(UserApp user)

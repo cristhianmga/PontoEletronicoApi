@@ -17,6 +17,5 @@ namespace PontoEletronico.Models
         [Required]
         [MaxLength(14)]
         public string Cnpj { get; set; }
-        public List<DadosContratacaoFuncionario> DadosContratacaoFuncionarios { get; set; }
     }
 }

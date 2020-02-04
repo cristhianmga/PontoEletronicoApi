@@ -11,13 +11,11 @@ namespace PontoEletronico.Models
         public Empresa Empresa { get; set; }
         [Required]
         public Funcionario Funcionario { get; set; }
-        [Required]
         public string Cargo { get; set; }
-        [Required]
         public TimeSpan CargaHoraria { get; set; }
-        [Required]
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
+        public bool Ceo { get;set; }
 
     }
 }

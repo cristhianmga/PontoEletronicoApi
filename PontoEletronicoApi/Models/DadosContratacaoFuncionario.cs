@@ -16,6 +16,8 @@ namespace PontoEletronico.Models
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
         public bool Ceo { get;set; }
+        public int EmpresaId { get; set; }
+        public int FuncionarioId { get; set; }
 
     }
 }

@@ -14,5 +14,7 @@ namespace PontoEletronico.Models.DTO
         public TimeSpan CargaHoraria { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
+        public int EmpresaId { get; set; }
+        public int FuncionarioId { get; set; }
     }
 }

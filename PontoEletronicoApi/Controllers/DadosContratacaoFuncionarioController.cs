@@ -43,9 +43,10 @@ namespace PontoEletronicoApi.Controllers
         }
 
         [HttpPost]
-        public DadosContratacaoFuncionario Salvar(DadosContratacaoFuncionario dto)
+        public DadosContratacaoFuncionario Salvar(DadosContratacaoFuncionarioDto dto)
         {
-            return servico.Salvar<DadosContratacaoFuncionario>(dto);
+            var retorno = _mapper.Map<DadosContratacaoFuncionario>(dto);
+            return servico.Salvar<DadosContratacaoFuncionario>(retorno);
         }
 
         [HttpPut]

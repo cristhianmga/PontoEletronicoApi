@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PontoEletronico.Models;
+using PontoEletronicoApi.Models;
 
 namespace PontoEletronico.Data
 {
@@ -15,5 +16,6 @@ namespace PontoEletronico.Data
         public DbSet<Funcionario> Funcionario { get; set; }
         public DbSet<RegistroPonto> RegistroPonto { get; set; }
         public DbSet<DadosContratacaoFuncionario> DadosContratacaoFuncionarios { get; set; }
+        public DbSet<Localizacao> Localizacao { get; set; }
     }
 }

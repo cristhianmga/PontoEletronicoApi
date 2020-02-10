@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using PontoEletronico.Models.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using PontoEletronicoApi.Models;
+using PontoEletronicoApi.Models.DTO;
 
 namespace PontoEletronico.Models.Mapper
 {
@@ -15,6 +13,7 @@ namespace PontoEletronico.Models.Mapper
             CreateMap<Funcionario, FuncionarioDto>().ReverseMap();
             CreateMap<RegistroPonto, RegistroPontoDto>().ReverseMap();
             CreateMap<DadosContratacaoFuncionario, DadosContratacaoFuncionarioDto>().ReverseMap();
+            CreateMap<Localizacao, LocalizacaoDto>().ReverseMap();
         }
     }
 }

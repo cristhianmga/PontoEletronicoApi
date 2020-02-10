@@ -22,9 +22,15 @@ namespace PontoEletronico.Servico.Base
         }
 
 
-        public virtual IQueryable<E> ObterTodos<E>(IEnumerable<string> includes = null) where E : class
+        public virtual IQueryable<E> ObterTodos<E>(IEnumerable<string> includes = null,bool isNotTracking = false) where E : class
         {
             IQueryable<E> result = _ctx.Set<E>().AsQueryable();
+
+            if (isNotTracking)
+            {
+                result = result.AsNoTracking();
+            }
+
             if (includes != null)
             {
                 foreach (string i in includes)
@@ -33,7 +39,10 @@ namespace PontoEletronico.Servico.Base
                 }
                 return result;
             }
-            else return result;
+            else
+            {
+                return result;
+            }
         }
 
 

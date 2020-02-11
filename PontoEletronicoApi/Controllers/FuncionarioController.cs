@@ -6,6 +6,7 @@ using PontoEletronico.Models;
 using PontoEletronico.Models.DTO;
 using PontoEletronico.Servico.Base;
 using PontoEletronico.Servico.Interface;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PontoEletronicoApi.Controllers
@@ -55,6 +56,18 @@ namespace PontoEletronicoApi.Controllers
             };
 
             return StatusCode(200, retorno);
+        }
+
+        [HttpGet]
+        [Route("obterEmpresas")]
+        public ObjectResult ObterEmpresas()
+        {
+            StringValues token;
+            Request.Headers.TryGetValue("Authorization", out token);
+            var cpf = _tokenJwtServico.ReadToken(token).Claims.ToList()[0].Value;
+            var listaEmpresas = _mapper.Map<List<EmpresaDto>>(servico.ObterTodos<DadosContratacaoFuncionario>(new string[] { "Empresa", "Funcionario" }).Where(x => x.Funcionario.Cpf == cpf).Select(y => y.Empresa).ToList());
+
+            return Ok(listaEmpresas);
         }
     }
 }

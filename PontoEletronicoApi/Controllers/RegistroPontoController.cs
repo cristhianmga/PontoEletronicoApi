@@ -10,6 +10,7 @@ using PontoEletronico.Data;
 using PontoEletronico.Models;
 using PontoEletronico.Models.DTO;
 using PontoEletronico.Servico.Base;
+using PontoEletronicoApi.Models.DTO;
 
 namespace PontoEletronicoApi.Controllers
 {
@@ -27,10 +28,42 @@ namespace PontoEletronicoApi.Controllers
         }
 
         [HttpGet]
-        [Route("ObterTodosPaginado")]
-        public PaginacaoDTO<RegistroPontoDto> ObterTodosPaginado([FromQuery]PaginacaoConfigDTO config,[FromQuery] int empresaId)
+        [Route("ObterRegistroPonto")]
+        public ObjectResult ObterTodosPaginado([FromQuery]DadosRegistroPontoDto dto)
         {
-            return servico.ObterTodos<RegistroPonto>().Where(x => x.DadosContratacaoFuncionario.EmpresaId == empresaId).AsPaginado<RegistroPontoDto>(config, _mapper);
+            var date = new DateTime(dto.Ano, dto.Mes, 1);
+            List<DateTime> days = new List<DateTime>();
+            while(date.Month == dto.Mes)
+            {
+                days.Add(date);
+                date = date.AddDays(1);
+            }
+            var dados = servico.ObterTodos<DadosContratacaoFuncionario>().Where(x => x.FuncionarioId == dto.FuncionarioId && x.EmpresaId == dto.EmpresaId).FirstOrDefault();
+            var ponto = servico.ObterTodos<RegistroPonto>().Where(x => x.DadosContratacaoFuncionario.EmpresaId == dto.EmpresaId && x.DadosContratacaoFuncionario.FuncionarioId == dto.FuncionarioId);
+            List<RetornoRegistroPontoDto> list = new List<RetornoRegistroPontoDto>();
+            days.ForEach(x =>
+            {
+            RetornoRegistroPontoDto entity = new RetornoRegistroPontoDto();
+                if (ponto.Any(y => y.Data == x))
+                {
+                    var busca = ponto.Where(z => z.Data == x).FirstOrDefault();
+                    entity.Data = x;
+                    entity.HoraEntrada = busca.HoraEntrada;
+                    entity.HoraSaida = busca.HoraSaida;
+                    entity.Saldo = busca.DadosContratacaoFuncionario.CargaHoraria - (busca.HoraSaida - busca.HoraEntrada);
+                    list.Add(entity);
+                }
+                else
+                {
+                    entity.Data = x;
+                    entity.HoraEntrada = new TimeSpan();
+                    entity.HoraSaida = new TimeSpan();
+                    entity.Saldo = dados.CargaHoraria;
+                    list.Add(entity);
+                }
+            });
+
+            return Ok(list);
         }
     }
 }

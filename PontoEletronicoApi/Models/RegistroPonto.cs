@@ -8,9 +8,11 @@ namespace PontoEletronico.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public DateTime HoraEntrada { get; set; }
+        public DateTime Data { get; set; }
         [Required]
-        public DateTime HoraSaida { get; set; }
+        public TimeSpan HoraEntrada { get; set; }
+        [Required]
+        public TimeSpan HoraSaida { get; set; }
         [Required]
         public DadosContratacaoFuncionario DadosContratacaoFuncionario { get; set; }
     }
